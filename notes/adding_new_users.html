@@ -1,6 +1,6 @@
 <script src="https://rawcdn.githack.com/oscarmorrison/md-page/232e97938de9f4d79f4110f6cfd637e186b63317/md-page.js"></script><noscript>
 ---
-title: Setting Up libvirt on Rocky Linux
+title: Adding New Users to a Linux System
 author: Howard Van Der Wal
 contributors:
 tested with: Rocky Linux 9.5
@@ -8,12 +8,56 @@ tags:
 - add
 - new
 - user
+- wheel
 ---
 
 # Adding New Users to a Linux System
 
 ## Introduction
 
+This is a basic tutorial on how to create new users on a Linux system.
+
 ## Prerequisites
 
+* A bare metal machine or VM running Linux.
+* Access to a `root` user or a user with privilege escalation.
+
+## Add a new user
+
+* Log in either as the `root` user or a user with privilege escalation.
+* Add the new user:
+```
+useradd -m <USERNAME>
+```
+* The `-m` flag creates a `/home/<USERNAME>` directory for the user, which the majority of users will require.
+
+## Setting a password
+
+* Provide the new user a password:
+```
+passwd <USERNAME>
+```
+* You can attempt to login with the new user's password, to ensure it was set correctly:
+```
+su - <USERNAME>
+```
+
+## Add the user to the wheel group for privilege escalation
+
+* Add the user to the `wheel` group (standard group for most distributions), so they can run commands with `sudo`:
+```
+usermod -aG wheel <USERNAME>
+```
+
+## Check the shadow file for the created user
+
+* To ensure the user was created correctly, check the `/etc/shadow` file:
+```
+grep <USERNAME> /etc/shadow
+```
+
 ## Conclusion
+
+The above has shown you how to add a new user, as well as set them up with a password and adding them to the `wheel` group for privilege escalation.
+
+[Back to Notes](notes.md)
